@@ -31,7 +31,7 @@
                 <tr>
                     <td class="caption">Is it really necessary to do this?</td>
                     <td>
-                        <select>
+                        <select id="importance">
                             <option value="1">Not important. (1)</option>
                             <option value="4">Minor importance. (4)</option>
                             <option value="6">Workaround available. (6)</option>
@@ -46,7 +46,7 @@
                         What area of general importance is it?
                     </td>
                     <td>
-                        <select>
+                        <select id="area">
                             <option value="1">Just for personal fun (1)</option>
                             <option value="6">
                                 Personal Development with the target of
@@ -65,7 +65,7 @@
                 <tr>
                     <td class="caption">How many people does it benefit?</td>
                     <td>
-                        <select>
+                        <select id="benefitors">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -97,6 +97,37 @@
                 let scales = document.querySelectorAll("select");
                 let result = document.querySelector("#result");
 
+                function SetScaleValueByName(name, value) {
+                    scales.forEach((scale) => {
+                        if (scale.id == name) {
+                            scale.value = value;
+                        }
+                    });
+                }
+
+                function InitializeScalesFromUrl() {
+                    const url = window.location.href.split("#");
+
+                    url.forEach((value) => {
+                        if (value.includes("=")) {
+                            const keyValue = value.split("=", 2);
+                            SetScaleValueByName(keyValue[0], keyValue[1]);
+                        }
+                    });
+                }
+
+                function UpdateUrlToReflectScales() {
+                    const baseUrl = window.location.href.split("#")[0];
+
+                    let scaleValuesAsUrl = "";
+
+                    scales.forEach((scale) => {
+                        scaleValuesAsUrl += `#${scale.id}=${scale.value}`;
+                    });
+
+                    window.location.href = `${baseUrl}${scaleValuesAsUrl}`;
+                }
+
                 scales.forEach((scale) => {
                     scale.addEventListener("change", calculateTotal);
                 });
@@ -109,9 +140,11 @@
                         value = value * scaleValue;
                     });
 
+                    UpdateUrlToReflectScales();
                     result.innerText = value.toString();
                 }
 
+                InitializeScalesFromUrl();
                 calculateTotal();
             </script>
         </div>
