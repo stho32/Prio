@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Priorisierungshelfer</title>
+        <link rel="stylesheet" href="libs/bootstrap.min.css" />
+        <style>
+            .result {
+                text-decoration-line: underline;
+                text-decoration-style: double;
+                font-size: 12pt;
+                font-weight: bold;
+                color: red;
+            }
+
+            .caption {
+                width: 50%;
+            }
+
+            select {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Expected Value</h1>
+            <br />
+            <table class="table table-sm" style="width: fit-content">
+                <tr>
+                    <td class="caption">Is it really necessary to do this?</td>
+                    <td>
+                        <select>
+                            <option value="1">Not important. (1)</option>
+                            <option value="4">Minor importance. (4)</option>
+                            <option value="6">Workaround available. (6)</option>
+                            <option value="8">No workaround. (8)</option>
+                            <option value="10">Show-stopper. (10)</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="caption">
+                        What area of general importance is it?
+                    </td>
+                    <td>
+                        <select>
+                            <option value="1">Just for personal fun (1)</option>
+                            <option value="6">
+                                Personal Development with the target of
+                                benefiting multiple people (6)
+                            </option>
+                            <option value="8">
+                                Social Endeavours benefiting multiple people (8)
+                            </option>
+                            <option value="10">
+                                Live & Health & Family (10)
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="caption">How many people does it benefit?</td>
+                    <td>
+                        <select>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">more than 9</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td class="float-right">
+                        Total:
+                        <span
+                            id="result"
+                            style="font-size: 16pt; font-weight: bold"
+                        ></span>
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+            <script>
+                let scales = document.querySelectorAll("select");
+                let result = document.querySelector("#result");
+
+                scales.forEach((scale) => {
+                    scale.addEventListener("change", calculateTotal);
+                });
+
+                function calculateTotal() {
+                    let value = 1;
+
+                    scales.forEach((scale) => {
+                        let scaleValue = parseInt(scale.value);
+                        value = value * scaleValue;
+                    });
+
+                    result.innerText = value.toString();
+                }
+
+                calculateTotal();
+            </script>
+        </div>
+    </body>
+</html>
